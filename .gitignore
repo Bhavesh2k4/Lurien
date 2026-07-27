@@ -1,0 +1,14 @@
+# Secrets — never commit
+.env
+.env.*
+!.env.example
+.claude/           # contains tokens captured in settings.local.json
+
+# Build output (root binaries only — leading slash so cmd/ dirs aren't ignored)
+/bin/
+/lurien
+/lurienctl
+/lurien-web
+
+# OS / editor
+.DS_Store
