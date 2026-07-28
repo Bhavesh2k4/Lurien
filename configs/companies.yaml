@@ -1,0 +1,124 @@
+# Lurien monitored companies.
+#
+# Adding a company = adding one entry here. No code change.
+# Provider config keys:
+#   greenhouse -> board_token   (boards-api.greenhouse.io/v1/boards/<token>/jobs)
+#   ashby      -> board_name    (api.ashbyhq.com/posting-api/job-board/<name>)
+#   lever      -> site          (api.lever.co/v0/postings/<site>?mode=json)
+#
+# Tokens confirmed reachable (HTTP 200) on 2026-07-29 / 2026-07-30.
+# Companies not yet on any provider (banks, semis, most unicorns, FAANG) live in
+# docs/BACKLOG.md until their provider (Workday/custom) is built.
+
+default_interval: 3m
+
+companies:
+  # --- Infrastructure / Databases ---
+  - { name: Cockroach Labs, slug: cockroachlabs, provider: greenhouse, config: { board_token: cockroachlabs } }
+  - { name: Yugabyte,       slug: yugabyte,      provider: greenhouse, config: { board_token: yugabyte } }
+  - { name: ClickHouse,     slug: clickhouse,    provider: greenhouse, config: { board_token: clickhouse } }
+  - { name: Neo4j,          slug: neo4j,         provider: greenhouse, config: { board_token: neo4j } }
+  - { name: SingleStore,    slug: singlestore,   provider: greenhouse, config: { board_token: singlestore } }
+  - { name: PlanetScale,    slug: planetscale,   provider: greenhouse, config: { board_token: planetscale } }
+
+  # --- Cloud ---
+  - { name: Cloudflare,     slug: cloudflare,    provider: greenhouse, config: { board_token: cloudflare } }
+  - { name: Fastly,         slug: fastly,        provider: greenhouse, config: { board_token: fastly } }
+
+  # --- AI ---
+  - { name: Anthropic,      slug: anthropic,     provider: greenhouse, config: { board_token: anthropic } }
+  - { name: Scale AI,       slug: scaleai,       provider: greenhouse, config: { board_token: scaleai } }
+  - { name: Together AI,    slug: togetherai,    provider: greenhouse, config: { board_token: togetherai } }
+  - { name: Fireworks AI,   slug: fireworksai,   provider: greenhouse, config: { board_token: fireworksai } }
+
+  # --- Data / Search / Observability ---
+  - { name: Elastic,        slug: elastic,       provider: greenhouse, config: { board_token: elastic } }
+  - { name: MongoDB,        slug: mongodb,       provider: greenhouse, config: { board_token: mongodb } }
+  - { name: Datadog,        slug: datadog,       provider: greenhouse, config: { board_token: datadog } }
+  - { name: Grafana Labs,   slug: grafanalabs,   provider: greenhouse, config: { board_token: grafanalabs } }
+  - { name: Fivetran,       slug: fivetran,      provider: greenhouse, config: { board_token: fivetran } }
+  - { name: Temporal,       slug: temporal,      provider: greenhouse, config: { board_token: temporaltechnologies } }
+  - { name: Databricks,     slug: databricks,    provider: greenhouse, config: { board_token: databricks } }  # Gatsby front-end, Greenhouse backend
+
+  # --- Developer Tools ---
+  - { name: GitLab,         slug: gitlab,        provider: greenhouse, config: { board_token: gitlab } }
+  - { name: Postman,        slug: postman,       provider: greenhouse, config: { board_token: postman } }
+  - { name: JetBrains,      slug: jetbrains,     provider: greenhouse, config: { board_token: jetbrains } }
+  - { name: Vercel,         slug: vercel,        provider: greenhouse, config: { board_token: vercel } }
+
+  # --- Security ---
+  - { name: Okta,           slug: okta,          provider: greenhouse, config: { board_token: okta } }
+  - { name: Rubrik,         slug: rubrik,        provider: greenhouse, config: { board_token: rubrik } }
+  - { name: Netskope,       slug: netskope,      provider: greenhouse, config: { board_token: netskope } }
+
+  # --- Fintech ---
+  - { name: Stripe,         slug: stripe,        provider: greenhouse, config: { board_token: stripe } }
+  - { name: Block,          slug: block,         provider: greenhouse, config: { board_token: block } }
+  - { name: PhonePe,        slug: phonepe,       provider: greenhouse, config: { board_token: phonepe } }
+  - { name: Groww,          slug: groww,         provider: greenhouse, config: { board_token: groww } }
+
+  # --- Quant / HFT (highest base for India new grads) ---
+  - { name: Jane Street,    slug: janestreet,    provider: greenhouse, config: { board_token: janestreet } }
+  - { name: IMC Trading,    slug: imc,           provider: greenhouse, config: { board_token: imc } }
+  - { name: WorldQuant,     slug: worldquant,    provider: greenhouse, config: { board_token: worldquant } }
+  - { name: Optiver,        slug: optiver,       provider: greenhouse, config: { board_token: optiver } } # board live, 0 open at add time
+
+  # --- Big product / consumer tech ---
+  - { name: Twilio,         slug: twilio,        provider: greenhouse, config: { board_token: twilio } }
+  - { name: Dropbox,        slug: dropbox,       provider: greenhouse, config: { board_token: dropbox } }
+  - { name: Airbnb,         slug: airbnb,        provider: greenhouse, config: { board_token: airbnb } }
+
+  # ===== Ashby boards (config.board_name) =====
+  - { name: Redis,          slug: redis,         provider: ashby, config: { board_name: redis } }
+  - { name: Confluent,      slug: confluent,     provider: ashby, config: { board_name: confluent } }
+  - { name: Snowflake,      slug: snowflake,     provider: ashby, config: { board_name: snowflake } }
+  - { name: Cohere,         slug: cohere,        provider: ashby, config: { board_name: cohere } }
+  - { name: OpenAI,         slug: openai,        provider: ashby, config: { board_name: openai } }
+  - { name: Sentry,         slug: sentry,        provider: ashby, config: { board_name: sentry } }
+  - { name: Perplexity,     slug: perplexity,    provider: ashby, config: { board_name: perplexity } }
+  - { name: Sarvam AI,      slug: sarvam,        provider: ashby, config: { board_name: sarvam } }
+  - { name: Supabase,       slug: supabase,      provider: ashby, config: { board_name: supabase } }
+  - { name: Snyk,           slug: snyk,          provider: ashby, config: { board_name: snyk } }  # board live, 0 open at add time
+  - { name: Wiz,            slug: wiz,           provider: ashby, config: { board_name: wiz } }    # board live, 0 open at add time
+
+  # ===== Lever boards (config.site) =====
+  - { name: Mistral AI,     slug: mistral,       provider: lever, config: { site: mistral } }      # board live, 0 open at add time
+
+  # ===== Workday boards (config.tenant/host/site; India filtered server-side) =====
+  # For employers whose entry level is "Software Engineer II/III", add
+  #   classify: { max_early_level: 2 }   (or 3)   so their new grads still match.
+  - { name: Nvidia,      slug: nvidia,      provider: workday, config: { tenant: nvidia,      host: nvidia.wd5.myworkdayjobs.com,      site: NVIDIAExternalCareerSite } }
+  - { name: Adobe,       slug: adobe,       provider: workday, config: { tenant: adobe,       host: adobe.wd5.myworkdayjobs.com,       site: external_experienced } }
+  - { name: Salesforce,  slug: salesforce,  provider: workday, config: { tenant: salesforce,  host: salesforce.wd12.myworkdayjobs.com, site: External_Career_Site } }
+  - { name: Mastercard,  slug: mastercard,  provider: workday, config: { tenant: mastercard,  host: mastercard.wd1.myworkdayjobs.com,  site: CorporateCareers } }
+  - { name: Autodesk,    slug: autodesk,    provider: workday, config: { tenant: autodesk,    host: autodesk.wd1.myworkdayjobs.com,    site: Ext } }
+  - { name: CrowdStrike, slug: crowdstrike, provider: workday, config: { tenant: crowdstrike, host: crowdstrike.wd5.myworkdayjobs.com, site: crowdstrikecareers } }
+  - { name: PayPal,      slug: paypal,      provider: workday, config: { tenant: paypal,      host: paypal.wd1.myworkdayjobs.com,      site: jobs } }
+  - { name: Workday,     slug: workday,     provider: workday, config: { tenant: workday,     host: workday.wd5.myworkdayjobs.com,     site: Workday } }
+  - { name: Visa,        slug: visa,        provider: workday, config: { tenant: visa,        host: visa.wd5.myworkdayjobs.com,        site: Visa } }
+  - { name: NXP,         slug: nxp,         provider: workday, config: { tenant: nxp,         host: nxp.wd3.myworkdayjobs.com,         site: careers } }
+  - { name: Marvell,     slug: marvell,     provider: workday, config: { tenant: marvell,     host: marvell.wd1.myworkdayjobs.com,     site: MarvellCareers } }
+  # Cadence's entry level is "Software Engineer II" (Grade T2, 1-3 yrs) -> ceiling 2.
+  - { name: Cadence,     slug: cadence,     provider: workday, config: { tenant: cadence,     host: cadence.wd1.myworkdayjobs.com,     site: External_Careers }, classify: { max_early_level: 2 } }
+  # Below use the provider's city-level India fallback (no country-level facet).
+  - { name: Micron,      slug: micron,      provider: workday, config: { tenant: micron,      host: micron.wd1.myworkdayjobs.com,      site: External } }
+  - { name: Broadcom,    slug: broadcom,    provider: workday, config: { tenant: broadcom,    host: broadcom.wd1.myworkdayjobs.com,    site: External_Career } }
+  - { name: Qualys,      slug: qualys,      provider: workday, config: { tenant: qualys,      host: qualys.wd5.myworkdayjobs.com,      site: Careers } }
+  - { name: HPE,         slug: hpe,         provider: workday, config: { tenant: hpe,         host: hpe.wd5.myworkdayjobs.com,         site: ACJobSite } }
+  - { name: Cisco,       slug: cisco,       provider: workday, config: { tenant: cisco,       host: cisco.wd5.myworkdayjobs.com,       site: Cisco_Careers } }
+  - { name: Analog Devices, slug: analogdevices, provider: workday, config: { tenant: analogdevices, host: analogdevices.wd1.myworkdayjobs.com, site: External } }
+  - { name: Altera,      slug: altera,      provider: workday, config: { tenant: altera,      host: altera.wd1.myworkdayjobs.com,      site: Altera } }
+  - { name: Deutsche Bank, slug: deutschebank, provider: workday, config: { tenant: db,        host: db.wd3.myworkdayjobs.com,          site: DBWebsite } }
+  - { name: Barclays,    slug: barclays,    provider: workday, config: { tenant: barclays,    host: barclays.wd3.myworkdayjobs.com,    site: External_Career_Site_Barclays } }
+  - { name: Wells Fargo, slug: wellsfargo,  provider: workday, config: { tenant: wf,          host: wf.wd1.myworkdayjobs.com,          site: WellsFargoJobs } }
+  - { name: Fidelity,    slug: fidelity,    provider: workday, config: { tenant: fmr,         host: fmr.wd1.myworkdayjobs.com,         site: FidelityCareers } }
+  - { name: KLA,         slug: kla,         provider: workday, config: { tenant: kla,         host: kla.wd1.myworkdayjobs.com,         site: Search } }
+  - { name: Capital One, slug: capitalone,  provider: workday, config: { tenant: capitalone,  host: capitalone.wd12.myworkdayjobs.com, site: Capital_One } }
+  - { name: F5,          slug: f5,          provider: workday, config: { tenant: ffive,       host: ffive.wd5.myworkdayjobs.com,       site: f5jobs } }
+
+  # ===== Eightfold boards (config.tenant/domain; India filtered server-side) =====
+  - { name: NetApp,      slug: netapp,      provider: eightfold, config: { tenant: netapp, domain: netapp.com } }
+
+  # ===== Custom company APIs =====
+  - { name: Amazon,      slug: amazon,      provider: amazon, config: { base_query: "software engineer" } }
+  - { name: Uber,        slug: uber,        provider: uber,   config: {} }
