@@ -25,7 +25,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-go@v5
         with:
-          go-version: stable
+          go-version-file: go.mod # install exactly the version go.mod requires
           cache: true
       - name: Apply migrations (idempotent)
         run: |
