@@ -1,6 +1,8 @@
 {
-  "$schema": "https://openapi.vercel.sh/vercel.json",
-  "rewrites": [
-    { "source": "/(.*)", "destination": "/api" }
+  "builds": [
+    { "src": "api/index.go", "use": "@vercel/go" }
+  ],
+  "routes": [
+    { "src": "/(.*)", "dest": "/api/index.go" }
   ]
 }
