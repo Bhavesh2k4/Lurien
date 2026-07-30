@@ -77,11 +77,22 @@ func (d *Dispatcher) Run(ctx context.Context) {
 	}
 }
 
-func (d *Dispatcher) tick(ctx context.Context) {
+// Drain processes all currently-due notifications and returns. Used by --once
+// mode (cron). Stops when a tick claims nothing (rescheduled retries have a
+// future next_attempt, so they aren't re-claimed here).
+func (d *Dispatcher) Drain(ctx context.Context) {
+	for ctx.Err() == nil {
+		if d.tick(ctx) == 0 {
+			return
+		}
+	}
+}
+
+func (d *Dispatcher) tick(ctx context.Context) int {
 	ns, err := d.ob.ClaimNotifications(ctx, d.batch, d.visibility)
 	if err != nil {
 		d.log.Error("claim failed", "err", err)
-		return
+		return 0
 	}
 	for _, n := range ns {
 		if err := d.ch.Send(ctx, n); err != nil {
@@ -98,6 +109,7 @@ func (d *Dispatcher) tick(ctx context.Context) {
 		_ = d.ob.MarkSent(ctx, n.ID)
 		d.log.Info("notification sent", "channel", d.ch.Name(), "company", n.Company, "title", n.Title, "url", n.URL)
 	}
+	return len(ns)
 }
 
 // backoff grows exponentially from 10s, capped at 30m.

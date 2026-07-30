@@ -40,6 +40,7 @@ func main() {
 		storeKind   = flag.String("store", envOr("LURIEN_STORE", "memory"), "store backend: memory | postgres")
 		dbDSN       = flag.String("db", os.Getenv("LURIEN_DB"), "Postgres DSN (or set LURIEN_DB)")
 		channelKind = flag.String("notify", envOr("LURIEN_NOTIFY", "log"), "channel: log | telegram | webhook")
+		once        = flag.Bool("once", false, "poll every source once, drain the outbox, then exit (for cron)")
 	)
 	flag.Parse()
 
@@ -95,6 +96,15 @@ func main() {
 			"new", st.New, "updated", st.Updated, "closed", st.Closed)
 	}
 
+	if *once {
+		// Cron/serverless mode: poll every source once, drain the outbox, exit.
+		log.Info("lurien single pass", "sources", len(sources))
+		pollOnce(ctx, sources, run, *concurrency)
+		dispatcher.Drain(ctx)
+		log.Info("lurien pass complete")
+		return
+	}
+
 	sched := scheduler.New(sources, run, *concurrency, log)
 
 	log.Info("lurien starting")
@@ -104,6 +114,29 @@ func main() {
 	go func() { defer wg.Done(); sched.Run(ctx) }()
 	wg.Wait()
 	log.Info("lurien stopped")
+}
+
+// pollOnce runs the engine over every enabled source exactly once, bounded by
+// concurrency.
+func pollOnce(ctx context.Context, sources []core.Source, run func(context.Context, core.Source), concurrency int) {
+	if concurrency <= 0 {
+		concurrency = 6
+	}
+	sem := make(chan struct{}, concurrency)
+	var wg sync.WaitGroup
+	for _, src := range sources {
+		if !src.Enabled {
+			continue
+		}
+		wg.Add(1)
+		go func(s core.Source) {
+			defer wg.Done()
+			sem <- struct{}{}
+			defer func() { <-sem }()
+			run(ctx, s)
+		}(src)
+	}
+	wg.Wait()
 }
 
 // newRepo builds the selected store backend.

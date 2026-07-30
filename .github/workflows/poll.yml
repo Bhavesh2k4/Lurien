@@ -1,0 +1,35 @@
+name: poll
+
+# Serverless "daemon": run one poll pass on a schedule instead of a long-running
+# process. Public repos get free unlimited Actions minutes.
+on:
+  schedule:
+    - cron: "*/10 * * * *" # every 10 minutes (UTC)
+  workflow_dispatch: {}    # allow manual runs
+
+concurrency:
+  group: poll
+  cancel-in-progress: false # never overlap two passes
+
+jobs:
+  poll:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    env:
+      LURIEN_DB: ${{ secrets.LURIEN_DB }}
+      LURIEN_STORE: postgres
+      LURIEN_NOTIFY: telegram
+      TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+      TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: stable
+          cache: true
+      - name: Apply migrations (idempotent)
+        run: |
+          go install github.com/pressly/goose/v3/cmd/goose@latest
+          "$(go env GOPATH)/bin/goose" -dir db/migrations postgres "$LURIEN_DB" up
+      - name: Poll all sources once
+        run: go run ./cmd/lurien -once
